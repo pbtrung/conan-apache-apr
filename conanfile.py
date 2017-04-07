@@ -36,6 +36,11 @@ class ApacheaprConan(ConanFile):
 
     def package(self):
         self.copy("*.so*", dst="lib", src="lib", keep_path=False)
+        self.copy("*.lib", dst="lib", src="lib", keep_path=False)
+        self.copy("*.pdb", dst="lib", src="lib", keep_path=False)
+        self.copy("*.exp", dst="lib", src="lib", keep_path=False)
+        self.copy("*.dll", dst="bin", src="bin", keep_path=False)
+        self.copy("*.pdb", dst="bin", src="bin", keep_path=False)
         self.copy("*.a", dst="lib", src="lib", keep_path=False)
         self.copy("*.h", dst="include", src="include", keep_path=True)
         self.copy("apr-1-config", dst="bin", src="bin", keep_path=False)
