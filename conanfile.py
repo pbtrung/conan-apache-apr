@@ -22,15 +22,11 @@ class ApacheaprConan(ConanFile):
             configure_command = "./configure"
             configure_command += " --prefix=" + os.getcwd()
             if self.settings.os == "Windows":
-                configure_command = "nmake -f ./Makefile.win"
-
-            windows_install_command = configure_command + " PREFIX=" + os.getcwd() + " install"
-
+                configure_command = "nmake -f ./Makefile.win PREFIX=" + os.getcwd() + " install"
+                
             with tools.chdir("apr-" + self.version):
                 self.run(configure_command)
-                if self.settings.os == "Windows":
-                    self.run(windows_install_command)
-                else:
+                if self.settings.os != "Windows":
                     self.run("make -j " + str(max(tools.cpu_count() - 1, 1)))
                     self.run("make install")
 
