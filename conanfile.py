@@ -42,7 +42,7 @@ class ApacheaprConan(ConanFile):
         self.copy("*.dll", dst="bin", src="bin", keep_path=False)
         self.copy("*.pdb", dst="bin", src="bin", keep_path=False)
         self.copy("*.a", dst="lib", src="lib", keep_path=False)
-        self.copy("*.h", dst="include", src="include/apr-1", keep_path=True)
+        self.copy("*.h", dst="include/apr-1", src="include", keep_path=False)
         self.copy("apr-1-config", dst="bin", src="bin", keep_path=False)
         self.copy("*", dst="build-1", src="build-1", keep_path=True)
 
