@@ -16,23 +16,30 @@ class ApacheaprConan(ConanFile):
         tools.download("https://www.apache.org/dyn/mirrors/mirrors.cgi?action=download&filename=apr/apr-" + self.version + file_ext, self.lib_name + file_ext)
         tools.unzip(self.lib_name + file_ext)
 
+    def config(self):
+        if self.settings.os == "Windows":
+            self.requires.add("apr/1.5.2@lasote/vcpkg", private=False)
+
     def build(self):
-        env_build = AutoToolsBuildEnvironment(self)
-        with tools.environment_append(env_build.vars):
-            configure_command = "./configure"
-            configure_command += " --prefix=" + os.getcwd()
-            if self.settings.os == "Windows":
-                configure_command = "nmake -f ./Makefile.win"
-                
-            install_command = "nmake -f ./Makefile.win PREFIX=" + os.getcwd() + " install"
-                
-            with tools.chdir("apr-" + self.version):
-                self.run(configure_command)
-                if self.settings.os != "Windows":
-                    self.run("make -j " + str(max(tools.cpu_count() - 1, 1)))
-                    self.run("make install")
-                else:
-                    self.run(install_command)
+        if self.settings.os == "Windows":
+            pass
+        else:
+            env_build = AutoToolsBuildEnvironment(self)
+            with tools.environment_append(env_build.vars):
+                configure_command = "./configure"
+                configure_command += " --prefix=" + os.getcwd()
+                if self.settings.os == "Windows":
+                    configure_command = "nmake -f ./Makefile.win"
+
+                install_command = "nmake -f ./Makefile.win PREFIX=" + os.getcwd() + " install"
+
+                with tools.chdir("apr-" + self.version):
+                    self.run(configure_command)
+                    if self.settings.os != "Windows":
+                        self.run("make -j " + str(max(tools.cpu_count() - 1, 1)))
+                        self.run("make install")
+                    else:
+                        self.run(install_command)
 
     def package(self):
         self.copy("*.so*", dst="lib", src="lib", keep_path=False)
