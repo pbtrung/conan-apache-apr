@@ -1,19 +1,18 @@
 build: false
-platform:
-  - x64
+
 environment:
-    PYTHON: "C:\\Python27"
-    PYTHON_VERSION: "2.7.11"
-    PYTHON_ARCH: "32"
+  PYTHON: "C:\\Python27"
+  PYTHON_VERSION: "2.7.13"
+  PYTHON_ARCH: "32"
 
-    CONAN_UPLOAD: 1
-    CONAN_REFERENCE: "apache-apr/1.5.2"
-    CONAN_USERNAME: "pbtrung"
-    CONAN_CHANNEL: "stable"
-    CONAN_TOTAL_PAGES: 1
+  CONAN_UPLOAD: 1
+  CONAN_REFERENCE: "apache-apr/1.5.2"
+  CONAN_USERNAME: "pbtrung"
+  CONAN_CHANNEL: "stable"
+  CONAN_TOTAL_PAGES: 1
 
-    matrix:
-        - CONAN_CURRENT_PAGE: 1
+  matrix:
+    - CONAN_CURRENT_PAGE: 1
 
 install:
   - set PATH=%PATH%;%PYTHON%/Scripts/
