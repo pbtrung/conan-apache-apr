@@ -36,18 +36,22 @@ class ApacheaprConan(ConanFile):
                     self.run(install_command)
 
     def package(self):
-        self.copy("*.so*", dst="lib", src="lib", keep_path=False)
-        self.copy("*.lib", dst="lib", src="lib", keep_path=False)
-        self.copy("*.pdb", dst="lib", src="lib", keep_path=False)
-        self.copy("*.exp", dst="lib", src="lib", keep_path=False)
-        self.copy("*.dll", dst="bin", src="bin", keep_path=False)
-        self.copy("*.pdb", dst="bin", src="bin", keep_path=False)
-        self.copy("*.a", dst="lib", src="lib", keep_path=False)
-        self.copy("*.h", dst="include/apr-1", src="include", keep_path=False)
+        self.copy("*.h", dst="include/apr-1", src="include/apr-1", keep_path=False)
+        if self.settings.os != "Windows":
+            self.copy("*.pc", dst="lib/pkgconfig", src="lib", keep_path=False)
+            if self.options.shared:
+                self.copy("*.so*", dst="lib", src="lib", keep_path=False)
+                self.copy("*.dylib", dst="lib", src="lib", keep_path=False)
+            else:
+                self.copy("*.a", dst="lib", src="lib", keep_path=False)
+        else:
+            if self.options.shared:
+                self.copy("*.dll", dst="bin", src="bin", keep_path=False)
+            else:
+                self.copy("*.lib", dst="lib", src="lib", keep_path=False)
+
         self.copy("apr-1-config", dst="bin", src="bin", keep_path=False)
-        self.copy("*", dst="build-1", src="build-1", keep_path=True)
+        self.copy("*.exp", dst="lib", src="lib", keep_path=False)
 
     def package_info(self):
-        self.cpp_info.includedirs = ["include", "include/apr-1"]
-        self.cpp_info.bindirs = ["bin"]
         self.cpp_info.libs = ["apr-1"]
