@@ -12,6 +12,8 @@ fi
 
 if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
     export CC="$C_COMPILER"
+else
+    export CC="clang"
 fi
 
 cd build
