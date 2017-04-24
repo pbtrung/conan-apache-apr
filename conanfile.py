@@ -31,6 +31,8 @@ class ApacheaprConan(ConanFile):
             configure_command += " --prefix=%s%s%s" % (os.getcwd(), os.sep, self.install_dir)
             with tools.chdir("apr-" + self.version):
                 files.mkdir(self.install_dir)
+                if self.settings.os == "Windows":
+                    self.run("activate")
                 self.run(buildconf_command)
                 self.run(configure_command)
                 self.run("make -j " + str(max(tools.cpu_count() - 1, 1)))
