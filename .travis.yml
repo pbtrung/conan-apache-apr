@@ -1,50 +1,88 @@
-os: linux
-services:
-  - docker
-sudo: required
-language: python
-env:
-  global:
-    - CONAN_UPLOAD=1
-    - CONAN_REFERENCE="apache-apr/1.5.2"
-    - CONAN_USERNAME="pbtrung"
-    - CONAN_CHANNEL="stable"
-    - CONAN_TOTAL_PAGES=1
-    - CONAN_CURRENT_PAGE=1
+sudo: true
+dist: trusty
 
-  matrix:
-    - CONAN_GCC_VERSIONS=4.9 CONAN_USE_DOCKER=1
-    - CONAN_GCC_VERSIONS=5.3 CONAN_USE_DOCKER=1
-    - CONAN_GCC_VERSIONS=5.4 CONAN_USE_DOCKER=1
-    - CONAN_GCC_VERSIONS=6.2 CONAN_USE_DOCKER=1
-    - CONAN_GCC_VERSIONS=6.3 CONAN_USE_DOCKER=1
+notifications:
+  email: false
+
+# Enable C++ support
+language: c
 
 matrix:
   include:
-    - os: osx
-      osx_image: xcode8.2
-      language: generic
-      env:
-    - os: osx
-      osx_image: xcode7.3
-      language: generic
-      env:
-    - os: osx
-      osx_image: xcode7.1
-      language: generic
-      env:
-    - os: osx
-      osx_image: xcode6.4
-      language: generic
-      env:
-    - os: osx
-      osx_image: xcode6.2
-      language: generic
-      env:
+    - os: linux
+      compiler: clang-3.8
+      env: C_COMPILER="clang-3.8" ARCH=x86_64
+      addons:
+        apt:
+          sources:
+            - sourceline: "deb http://apt.llvm.org/trusty/ llvm-toolchain-trusty-3.8 main"
+              key_url:    "http://apt.llvm.org/llvm-snapshot.gpg.key"
+            - ubuntu-toolchain-r-test
+          packages:
+            - clang-3.8
+            - libtool
+    - os: linux
+      compiler: clang-3.8
+      env: C_COMPILER="clang-3.8" ARCH=i686
+      addons:
+        apt:
+          sources:
+            - sourceline: "deb http://apt.llvm.org/trusty/ llvm-toolchain-trusty-3.8 main"
+              key_url:    "http://apt.llvm.org/llvm-snapshot.gpg.key"
+            - ubuntu-toolchain-r-test
+          packages:
+            - clang-3.8
+            - libtool
+    - os: linux
+      compiler: clang-3.9
+      env: C_COMPILER="clang-3.9"
+      addons:
+        apt:
+          sources:
+            - sourceline: "deb http://apt.llvm.org/trusty/ llvm-toolchain-trusty-3.9 main"
+              key_url:    "http://apt.llvm.org/llvm-snapshot.gpg.key"
+            - ubuntu-toolchain-r-test
+          packages:
+            - clang-3.9
+            - libtool
+    - os: linux
+      compiler: clang-4.0
+      env: C_COMPILER="clang-4.0"
+      addons:
+        apt:
+          sources:
+            - sourceline: "deb http://apt.llvm.org/trusty/ llvm-toolchain-trusty-4.0 main"
+              key_url:    "http://apt.llvm.org/llvm-snapshot.gpg.key"
+            - ubuntu-toolchain-r-test
+          packages:
+            - clang-4.0
+            - libtool
+    - os: linux
+      compiler: gcc-5
+      env: C_COMPILER="gcc-5"
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - gcc-5
+            - libtool
+    - os: linux
+      compiler: gcc-6
+      env: C_COMPILER="gcc-6"
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - gcc-6
+            - libtool
 
-install:
-  - sudo apt-get update -qq
-  - sudo apt-get install -qq libtool
-  - ./.travis/install.sh
+# Build steps
 script:
-  - ./.travis/run.sh
+  - export CC="$C_COMPILER"
+  - pip install conan ConfigParser
+  - conan user pbtrung -p $CONAN_PASSWORD
+  - cd build
+  - conan install . --build missing
+  - conan upload apache-apr/1.6.0@pbtrung/stable --all -r=conan.io
