@@ -43,6 +43,8 @@ matrix:
       env:
 
 install:
+  - sudo apt-get update -qq
+  - sudo apt-get install -qq libtool
   - ./.travis/install.sh
 script:
   - ./.travis/run.sh
