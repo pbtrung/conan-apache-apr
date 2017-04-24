@@ -19,8 +19,9 @@ class ApacheaprConan(ConanFile):
         tools.unzip(zip_name)
         os.unlink(zip_name)
 
-    def configure(self):
-        self.requires.add("mingw_installer/0.1@lasote/testing", private=False)
+    #def configure(self):
+        #if self.settings.os == "Windows":
+            #self.requires.add("mingw_installer/0.1@lasote/testing", private=False)
 
     def build(self):
         env_build = AutoToolsBuildEnvironment(self)
