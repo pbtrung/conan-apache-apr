@@ -20,3 +20,4 @@ fi
 
 pip install conan_package_tools ConfigParser
 conan user
+conan install libtool/2.4.6@sztomi/testing --build missing
