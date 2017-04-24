@@ -18,7 +18,7 @@ class ApacheaprConan(ConanFile):
         tools.unzip(zip_name)
         os.unlink(zip_name)
 
-     def configure(self):
+    def configure(self):
         self.requires.add("libtool/2.4.6@sztomi/testing", private=False)
 
     def build(self):
