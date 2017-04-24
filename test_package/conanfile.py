@@ -7,8 +7,9 @@ username = os.getenv("CONAN_USERNAME", "pbtrung")
 
 
 class ApacheaprTestConan(ConanFile):
+    version = "1.6.0"
     settings = "os", "compiler", "build_type", "arch"
-    requires = "apache-apr/1.5.2@%s/%s" % (username, channel)
+    requires = "apache-apr/%s@%s/%s" % (version, username, channel)
     generators = "cmake"
 
     def build(self):

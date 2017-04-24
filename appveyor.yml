@@ -6,7 +6,7 @@ environment:
   PYTHON_ARCH: "32"
 
   CONAN_UPLOAD: 1
-  CONAN_REFERENCE: "apache-apr/1.5.2"
+  CONAN_REFERENCE: "apache-apr/1.6.0"
   CONAN_USERNAME: "pbtrung"
   CONAN_CHANNEL: "stable"
   CONAN_TOTAL_PAGES: 1
@@ -16,7 +16,7 @@ environment:
 
 install:
   - set PATH=%PATH%;%PYTHON%/Scripts/
-  - pip.exe install conan_package_tools
+  - pip.exe install conan_package_tools ConfigParser
   - conan user
 
 test_script:
