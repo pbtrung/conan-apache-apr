@@ -1,5 +1,4 @@
 from conans import ConanFile, AutoToolsBuildEnvironment, tools
-from conans.util import files
 import os
 
 class ApacheaprConan(ConanFile):
@@ -19,18 +18,29 @@ class ApacheaprConan(ConanFile):
         tools.unzip(zip_name)
         os.unlink(zip_name)
 
+     def configure(self):
+        self.requires.add("libtool/2.4.6@sztomi/testing", private=False)
+
     def build(self):
         env_build = AutoToolsBuildEnvironment(self)
         with tools.environment_append(env_build.vars):
             buildconf_command = "./buildconf"
             configure_command = "./configure"
-            configure_command += " --prefix=%s%s%s" % (os.getcwd(), os.sep, self.install_dir)
+            configure_command += " --prefix=" + os.getcwd() + os.sep + self.install_dir
+            if self.settings.os == "Windows":
+                configure_command = "nmake -f ./Makefile.win" 
+
+            install_command = "nmake -f ./Makefile.win PREFIX=" + os.getcwd() + os.sep + self.install_dir
+
             with tools.chdir("apr-" + self.version):
-                files.mkdir(self.install_dir)
-                self.run(buildconf_command)
-                self.run(configure_command)
-                self.run("make -j " + str(max(tools.cpu_count() - 1, 1)))
-                self.run("make install")
+                if self.settings.os != "Windows":
+                    self.run(buildconf_command)
+                    self.run(configure_command)
+                    self.run("make -j " + str(max(tools.cpu_count() - 1, 1)))
+                    self.run("make install")
+                else:
+                    self.run(configure_command)
+                    self.run(install_command)
 
     def package(self):
         install_path = self.install_dir + os.sep
@@ -44,12 +54,12 @@ class ApacheaprConan(ConanFile):
                 self.copy("*.a", dst="lib", src=install_path + "lib", keep_path=False)
         else:
             if self.options.shared:
-                self.copy("*.dll", dst="bin", src=install_path + "bin", keep_path=False)
+                self.copy("*.dll", dst="bin", src=install_path, keep_path=False)
             else:
-                self.copy("*.lib", dst="lib", src=install_path + "lib", keep_path=False)
+                self.copy("*.lib", dst="lib", src=install_path, keep_path=False)
 
         self.copy("apr-1-config", dst="bin", src=install_path + "bin", keep_path=False)
-        self.copy("*.exp", dst="lib", src=install_path + "lib", keep_path=False)
+        self.copy("*.exp", dst="lib", src=install_path, keep_path=False)
         self.copy("*", dst="build-1", src=install_path + "build-1", keep_path=False)
 
     def package_info(self):

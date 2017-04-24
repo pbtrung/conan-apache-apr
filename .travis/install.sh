@@ -9,7 +9,7 @@ if [[ "$(uname -s)" == 'Darwin' ]]; then
     brew install pyenv-virtualenv
 
     if which pyenv > /dev/null; then
-	eval "$(pyenv init -)"
+    eval "$(pyenv init -)"
     fi
 
     pyenv install 2.7.13
@@ -18,5 +18,5 @@ if [[ "$(uname -s)" == 'Darwin' ]]; then
     pyenv activate conan
 fi
 
-pip install conan ConfigParser
-conan user pbtrung -p $CONAN_PASSWORD
+pip install conan_package_tools ConfigParser
+conan user
