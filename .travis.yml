@@ -22,18 +22,6 @@ matrix:
             - clang-3.8
             - libtool
     - os: linux
-      compiler: clang-3.8
-      env: C_COMPILER="clang-3.8" ARCH=i686
-      addons:
-        apt:
-          sources:
-            - sourceline: "deb http://apt.llvm.org/trusty/ llvm-toolchain-trusty-3.8 main"
-              key_url:    "http://apt.llvm.org/llvm-snapshot.gpg.key"
-            - ubuntu-toolchain-r-test
-          packages:
-            - clang-3.8
-            - libtool
-    - os: linux
       compiler: clang-3.9
       env: C_COMPILER="clang-3.9"
       addons:
@@ -78,11 +66,15 @@ matrix:
             - gcc-6
             - libtool
 
-# Build steps
+    - os: osx
+      osx_image: xcode8.3
+    - os: osx
+      osx_image: xcode7.3
+    - os: osx
+      osx_image: xcode6.4
+
+
+install:
+  - ./.travis/install.sh
 script:
-  - export CC="$C_COMPILER"
-  - pip install conan ConfigParser
-  - conan user pbtrung -p $CONAN_PASSWORD
-  - cd build
-  - conan install . --build missing
-  - conan upload apache-apr/1.6.0@pbtrung/stable --all -r=conan.io
+  - ./.travis/run.sh

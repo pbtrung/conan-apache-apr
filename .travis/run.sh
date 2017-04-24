@@ -10,4 +10,10 @@ if [[ "$(uname -s)" == 'Darwin' ]]; then
     pyenv activate conan
 fi
 
-python build.py
+if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+    export CC="$C_COMPILER"
+fi
+
+cd build
+conan install . --build missing
+conan upload apache-apr/1.6.0@pbtrung/stable --all -r=conan.io
