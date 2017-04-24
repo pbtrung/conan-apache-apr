@@ -19,7 +19,8 @@ class ApacheaprConan(ConanFile):
         os.unlink(zip_name)
 
     def configure(self):
-        self.requires.add("libtool/2.4.6@sztomi/testing", private=False)
+        if self.settings.os != "Windows":
+            self.requires.add("libtool/2.4.6@sztomi/testing", private=False)
 
     def build(self):
         env_build = AutoToolsBuildEnvironment(self)
@@ -63,4 +64,6 @@ class ApacheaprConan(ConanFile):
         self.copy("*", dst="build-1", src=install_path + "build-1", keep_path=False)
 
     def package_info(self):
+        self.cpp_info.includedirs = ["include", "include/apr-1"]
+        self.cpp_info.bindirs = ["bin"]
         self.cpp_info.libs = ["apr-1"]
