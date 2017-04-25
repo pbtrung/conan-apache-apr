@@ -4,11 +4,6 @@ services:
 sudo: required
 language: python
 
-addons:
-  apt:
-    packages:
-      - libtool
-      
 env:
   global:
     - CONAN_UPLOAD=1

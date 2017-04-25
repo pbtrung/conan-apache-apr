@@ -23,6 +23,8 @@ class ApacheaprConan(ConanFile):
             self.requires.add("libtool/2.4.6@sztomi/testing", private=False, dev=True)
 
     def build(self):
+        self.run('sudo docker exec -it lasote/conangcc49 /bin/sh -c "sudo apt-get install -qq libtool"')
+        self.run('sudo docker exec -it lasote/conangcc54 /bin/sh -c "sudo apt-get install -qq libtool"')
         env_build = AutoToolsBuildEnvironment(self)
         with tools.environment_append(env_build.vars):
             buildconf_command = "./buildconf"
