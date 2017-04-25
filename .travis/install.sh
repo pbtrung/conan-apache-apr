@@ -9,7 +9,7 @@ if [[ "$(uname -s)" == 'Darwin' ]]; then
     brew install pyenv-virtualenv
 
     if which pyenv > /dev/null; then
-    eval "$(pyenv init -)"
+	eval "$(pyenv init -)"
     fi
 
     pyenv install 2.7.13
