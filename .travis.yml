@@ -3,6 +3,8 @@ services:
   - docker
 sudo: required
 
+language: c
+
 matrix:
   include:
     - os: linux
