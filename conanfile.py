@@ -31,6 +31,7 @@ class ApacheaprConan(ConanFile):
             self.requires("libtool/2.4.6@sztomi/testing", private=False, dev=True)
 
     def build(self):
+        self.run("conan install libtool/2.4.6@sztomi/testing --build missing")
         env_build = AutoToolsBuildEnvironment(self)
         with tools.environment_append(env_build.vars):
             buildconf_command = "./buildconf"
