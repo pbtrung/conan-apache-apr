@@ -19,6 +19,7 @@ class ApacheaprConan(ConanFile):
         os.unlink(zip_name)
 
     def configure(self):
+        self.requires.add("libxml2/2.9.3@lasote/stable", private=False)
         if self.settings.os != "Windows":
             self.requires.add("libtool/2.4.6@sztomi/testing", private=False)
 
@@ -26,7 +27,7 @@ class ApacheaprConan(ConanFile):
         env_build = AutoToolsBuildEnvironment(self)
         with tools.environment_append(env_build.vars):
             buildconf_command = "./buildconf"
-            configure_command = "./configure"
+            configure_command = "./configure --with-libxml2"
             configure_command += " --prefix=" + os.getcwd() + os.sep + self.install_dir
 
             with tools.chdir("apr-trunk"):
