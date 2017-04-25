@@ -3,10 +3,6 @@ services:
   - docker
 sudo: required
 
-language:
-  - python
-  - c
-
 matrix:
   include:
     - os: linux
