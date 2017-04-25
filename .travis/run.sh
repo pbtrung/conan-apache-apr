@@ -14,5 +14,7 @@ else
     conan user pbtrung -p $CONAN_PASSWORD
     cd build
     conan install . --build missing
-    conan upload apache-apr/1.6.0@pbtrung/stable --all -r=conan.io 
+    conan upload apache-apr/1.6.0@pbtrung/stable --all -r=conan.io
+    cd ..
+    conan test_package
 fi
