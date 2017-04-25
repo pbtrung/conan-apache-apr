@@ -3,12 +3,11 @@ services:
   - docker
 sudo: required
 
-language: c
+language: python
 
 matrix:
   include:
     - os: linux
-      language: c
       compiler: clang-3.8
       env: C_COMPILER="clang-3.8"
       addons:
@@ -21,7 +20,6 @@ matrix:
             - clang-3.8
             - libtool
     - os: linux
-      language: c
       compiler: clang-3.9
       env: C_COMPILER="clang-3.9"
       addons:
@@ -34,7 +32,6 @@ matrix:
             - clang-3.9
             - libtool
     - os: linux
-      language: c
       compiler: clang-4.0
       env: C_COMPILER="clang-4.0"
       addons:
@@ -47,7 +44,6 @@ matrix:
             - clang-4.0
             - libtool
     - os: linux
-      language: c
       compiler: gcc-5
       env: C_COMPILER="gcc-5"
       addons:
@@ -58,7 +54,6 @@ matrix:
             - gcc-5
             - libtool
     - os: linux
-      language: c
       compiler: gcc-6
       env: C_COMPILER="gcc-6"
       addons:
@@ -71,23 +66,23 @@ matrix:
 
     - os: osx
       osx_image: xcode8.2
-      language: c
+      language: generic
       env:
     - os: osx
       osx_image: xcode7.3
-      language: c
+      language: generic
       env:
     - os: osx
       osx_image: xcode7.1
-      language: c
+      language: generic
       env:
     - os: osx
       osx_image: xcode6.4
-      language: c
+      language: generic
       env:
     - os: osx
       osx_image: xcode6.2
-      language: c
+      language: generic
       env:
 
 
