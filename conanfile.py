@@ -18,9 +18,9 @@ class ApacheaprConan(ConanFile):
         tools.unzip(zip_name)
         os.unlink(zip_name)
 
-    #def configure(self):
-        #if self.settings.os != "Windows":
-            #self.requires.add("libtool/2.4.6@sztomi/testing", private=False)
+    def configure(self):
+        if self.settings.os != "Windows":
+            self.requires.add("libtool/2.4.6@sztomi/testing", private=False)
 
     def build(self):
         env_build = AutoToolsBuildEnvironment(self)
