@@ -20,11 +20,9 @@ class ApacheaprConan(ConanFile):
 
     def configure(self):
         if self.settings.os != "Windows":
-            self.requires.add("libtool/2.4.6@sztomi/testing", private=False, dev=True)
+            self.requires.add("libtool/2.4.6@sztomi/testing", private=False)
 
     def build(self):
-        self.run('sudo docker exec -it lasote/conangcc49 /bin/sh -c "sudo apt-get install -qq libtool"')
-        self.run('sudo docker exec -it lasote/conangcc54 /bin/sh -c "sudo apt-get install -qq libtool"')
         env_build = AutoToolsBuildEnvironment(self)
         with tools.environment_append(env_build.vars):
             buildconf_command = "./buildconf"
@@ -39,8 +37,8 @@ class ApacheaprConan(ConanFile):
                 self.run(buildconf_command)
                 self.run(configure_command)
                 self.run("make -j " + str(max(tools.cpu_count() - 1, 1)))
-                self.run("make install")       
-            
+                self.run("make install")
+
     def package(self):
         install_path = self.install_dir + os.sep
         self.copy("*.h", dst="include/apr-2", src=install_path + "include/apr-2", keep_path=False)
