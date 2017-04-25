@@ -29,7 +29,7 @@ class ApacheaprConan(ConanFile):
             configure_command = "./configure --without-libtool"
             configure_command += " --prefix=" + os.getcwd() + os.sep + self.install_dir
 
-            with tools.chdir("apr-trunk"):
+            with tools.chdir("apr-" + self.version):
                 self.run(buildconf_command)
                 self.run(configure_command)
                 self.run("make -j " + str(max(tools.cpu_count() - 1, 1)))
