@@ -18,33 +18,23 @@ class ApacheaprConan(ConanFile):
         tools.unzip(zip_name)
         os.unlink(zip_name)
 
-    def configure(self):
+    def requirements(self):
         if self.settings.os != "Windows":
-            self.requires.add("libtool/2.4.6@sztomi/testing", private=False)
+            self.requires("libtool/2.4.6@sztomi/testing", private=False, override=False, dev=True)
 
     def build(self):
         env_build = AutoToolsBuildEnvironment(self)
         with tools.environment_append(env_build.vars):
-            
-            if self.settings.os == "Windows":
-                buildconf_command = "sh -c ./buildconf"
-                configure_command = "sh -c ./configure"
-                configure_command += " --prefix=" + os.getcwd() + os.sep + self.install_dir
-            else:
-                buildconf_command = "./buildconf"
-                configure_command = "./configure"
-                configure_command += " --prefix=" + os.getcwd() + os.sep + self.install_dir
+            buildconf_command = "./buildconf"
+            configure_command = "./configure"
+            configure_command += " --prefix=" + os.getcwd() + os.sep + self.install_dir
 
             with tools.chdir("apr-" + self.version):
                 self.run(buildconf_command)
                 self.run(configure_command)
-                if self.settings.os != "Windows":
-                    self.run("make -j " + str(max(tools.cpu_count() - 1, 1)))
-                    self.run("make install")
-                else:
-                    self.run("sh -c make -j " + str(max(tools.cpu_count() - 1, 1)))
-                    self.run("sh -c make install")
-
+                self.run("make -j " + str(max(tools.cpu_count() - 1, 1)))
+                self.run("make install")       
+            
     def package(self):
         install_path = self.install_dir + os.sep
         self.copy("*.h", dst="include/apr-1", src=install_path + "include/apr-1", keep_path=False)
