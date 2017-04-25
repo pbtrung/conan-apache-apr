@@ -13,14 +13,14 @@ class ApacheaprConan(ConanFile):
     install_dir = "install"
 
     def source(self):
-        zip_name = "apr-%s.zip" % self.version
-        tools.download("https://github.com/apache/apr/archive/trunk.zip" % self.version, zip_name, verify=False)
+        zip_name = "apr-trunk.zip"
+        tools.download("https://github.com/apache/apr/archive/trunk.zip", zip_name, verify=False)
         tools.unzip(zip_name)
         os.unlink(zip_name)
 
     def configure(self):
         if self.settings.os != "Windows":
-            self.requires.add("libtool/2.4.6@sztomi/testing", private=False)
+            self.requires.add("libtool/2.4.6@sztomi/testing", private=False, dev=True)
 
     def build(self):
         env_build = AutoToolsBuildEnvironment(self)
@@ -29,7 +29,11 @@ class ApacheaprConan(ConanFile):
             configure_command = "./configure"
             configure_command += " --prefix=" + os.getcwd() + os.sep + self.install_dir
 
-            with tools.chdir("apr-" + self.version):
+            with tools.chdir("apr-trunk"):
+                self.run("chmod +x %s" % buildconf_command)
+                self.run("chmod +x ./build/*.sh")
+                self.run("chmod +x ./build/*.py")
+                self.run("chmod +x ./build/PrintPath")
                 self.run(buildconf_command)
                 self.run(configure_command)
                 self.run("make -j " + str(max(tools.cpu_count() - 1, 1)))
