@@ -2,8 +2,15 @@ os: linux
 services:
   - docker
 sudo: required
-
 language: python
+env:
+  global:
+    - CONAN_UPLOAD=1
+    - CONAN_REFERENCE="apache-apr/1.6.0"
+    - CONAN_USERNAME="pbtrung"
+    - CONAN_CHANNEL="stable"
+    - CONAN_TOTAL_PAGES=1
+    - CONAN_CURRENT_PAGE=1
 
 matrix:
   include:
