@@ -2,12 +2,12 @@ from conans import ConanFile, CMake
 import os
 
 
-channel = os.getenv("CONAN_CHANNEL", "testing")
+channel = os.getenv("CONAN_CHANNEL", "stable")
 username = os.getenv("CONAN_USERNAME", "pbtrung")
 
 
 class ApacheaprTestConan(ConanFile):
-    version = "latest"
+    version = "1.6.0"
     settings = "os", "compiler", "build_type", "arch"
     requires = "apache-apr/%s@%s/%s" % (version, username, channel)
     generators = "cmake"

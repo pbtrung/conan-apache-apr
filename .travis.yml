@@ -7,9 +7,9 @@ language: python
 env:
   global:
     - CONAN_UPLOAD=1
-    - CONAN_REFERENCE="apache-apr/latest"
+    - CONAN_REFERENCE="apache-apr/1.6.0"
     - CONAN_USERNAME="pbtrung"
-    - CONAN_CHANNEL="testing"
+    - CONAN_CHANNEL="stable"
     - CONAN_TOTAL_PAGES=1
     - CONAN_CURRENT_PAGE=1
 
