@@ -20,7 +20,7 @@ class ApacheaprConan(ConanFile):
 
     def configure(self):
         if self.settings.os != "Windows":
-            self.requires.add("libtool/2.4.6@sztomi/testing", private=False, override=False, dev=True)
+            self.requires.add("libtool/2.4.6@sztomi/testing", private=False, dev=True)
 
     def build(self):
         env_build = AutoToolsBuildEnvironment(self)
