@@ -25,23 +25,25 @@ class ApacheaprConan(ConanFile):
     def build(self):
         env_build = AutoToolsBuildEnvironment(self)
         with tools.environment_append(env_build.vars):
-            buildconf_command = "./buildconf"
-            configure_command = "./configure"
-            configure_command += " --prefix=" + os.getcwd() + os.sep + self.install_dir
+            
             if self.settings.os == "Windows":
-                configure_command = "nmake -f ./Makefile.win" 
-
-            install_command = "nmake -f ./Makefile.win PREFIX=" + os.getcwd() + os.sep + self.install_dir
+                buildconf_command = "sh -c ./buildconf"
+                configure_command = "sh -c ./configure"
+                configure_command += " --prefix=" + os.getcwd() + os.sep + self.install_dir
+            else:
+                buildconf_command = "./buildconf"
+                configure_command = "./configure"
+                configure_command += " --prefix=" + os.getcwd() + os.sep + self.install_dir
 
             with tools.chdir("apr-" + self.version):
+                self.run(buildconf_command)
+                self.run(configure_command)
                 if self.settings.os != "Windows":
-                    self.run(buildconf_command)
-                    self.run(configure_command)
                     self.run("make -j " + str(max(tools.cpu_count() - 1, 1)))
                     self.run("make install")
                 else:
-                    self.run(configure_command)
-                    self.run(install_command)
+                    self.run("sh -c make -j " + str(max(tools.cpu_count() - 1, 1)))
+                    self.run("sh -c make install")
 
     def package(self):
         install_path = self.install_dir + os.sep
