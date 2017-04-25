@@ -1,5 +1,5 @@
 [requires]
-apache-apr/1.6.0@pbtrung/stable
+apache-apr/latest@pbtrung/testing
 
 [generators]
 cmake
