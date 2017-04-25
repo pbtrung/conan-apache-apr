@@ -1,5 +1,8 @@
 #include <iostream>
+#include <apr-2/apr_general.h>
 
-int main() {
-    std::cout << "Hello World!";
+int main(int argc, char* argv[]) {
+    const char* const* test = argv;
+    apr_app_initialize(&argc, &test, 0);
+    apr_terminate();
 }
